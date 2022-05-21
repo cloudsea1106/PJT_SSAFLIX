@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from .serializers import ProfileSerializer
 
+
 User = get_user_model()
 
 @api_view(['GET'])
@@ -69,6 +70,3 @@ def movie_follow(request):
 
     return Response(fb_like_movies)
 
-
-
-    
