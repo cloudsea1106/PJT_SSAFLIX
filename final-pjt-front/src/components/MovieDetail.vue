@@ -22,9 +22,12 @@
             </div>
             <div class="col-8">
               <v-card-text>
+                <p>줄거리</p>
                 <p>{{ movie.overview }}</p>
-                <p>{{ movie.genre_ids }}</p>
+                <p>개봉일</p>
                 <p>{{ movie.release_date }}</p>
+                <p>평점</p>
+                <p>{{ movie.vote_average }}</p>
                 <a :href="previewUrl" target="_blank">
                   <v-btn depressed color="primary">Preview</v-btn>
                 </a>

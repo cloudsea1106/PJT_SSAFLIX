@@ -3,7 +3,7 @@
     <h2>NEW</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
       <movie-card
-        v-for="movie in movies1"
+        v-for="movie in movies"
         :key="movie.id"
         :movie="movie"
       ></movie-card>
@@ -11,7 +11,7 @@
     <h2>Recommand</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
       <movie-card
-        v-for="movie in movies2"
+        v-for="movie in movies"
         :key="movie.id"
         :movie="movie"
       ></movie-card>
@@ -22,45 +22,21 @@
 
 <script>
 import MovieCard from '@/components/MovieCard.vue'
-import axios from 'axios'
-
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  name: 'homeView',
   components: {
     MovieCard,
   },
-  data: function () {
-    return {
-      movies1: [],
-      movies2: [],
-    }
+  computed: {
+    ...mapGetters(['movies'])
   },
   methods: {
-    moviesList: function () {
-      
-      const API_KEY = '2a6dea0a3c73563a3895522bdb8c6a92'
-      const API_URL = 'https://api.themoviedb.org/3/movie/popular'
-      
-      const params = {
-        api_key: API_KEY,
-        region: 'KR',
-        language: 'ko',
-      }
-
-      axios({
-        method: 'get',
-        url: API_URL,
-        params: params,
-      })
-        .then(res => {
-          this.movies1 = res.data.results.slice(0,6)
-          this.movies2 = res.data.results.slice(6,12)
-        })
-    }
+    ...mapActions(['fetchMovies'])
   },
-  beforeMount() {
-    this.moviesList()
+  created() {
+    this.fetchMovies()
   }
-  
 }
 </script>

@@ -13,14 +13,17 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="isLoggedIn">
               <router-link class="nav-link" to="/mypage">My Page</router-link>
             </li>
-            <li class="nav-item">
-              <login-Dialog class="nav-link"></login-Dialog>
+            <li class="nav-item" v-if="!isLoggedIn">
+              <login-dialog class="nav-link"></login-dialog>
             </li>
-            <li class="nav-item">
-              <signup-Dialog class="nav-link"></signup-Dialog>
+            <li class="nav-item" v-if="!isLoggedIn">
+              <signup-dialog class="nav-link"></signup-dialog>
+            </li>
+            <li class="nav-item" v-if="isLoggedIn">
+              <logout-view class="nav-link"></logout-view>
             </li>
           </ul>
         </div>
@@ -33,11 +36,28 @@
 <script>
 import LoginDialog from '@/components/LoginDialog.vue'
 import SignupDialog from '@/components/SignupDialog.vue'
+import LogoutView from '@/components/LogoutView.vue'
+
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  name: 'App',
   components: {
     LoginDialog,
     SignupDialog,
+    LogoutView,
+  },
+  methods: {
+    ...mapActions(['fetchCurrentUser'])
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn', 'currentUser']),
+    username() {
+      return this.currentUser.username ? this.currentUser.username : 'guest'
+    },
+  },
+  created() {
+    this.fetchCurrentUser()
   }
 }
 </script>
