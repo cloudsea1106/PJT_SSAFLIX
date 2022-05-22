@@ -1,27 +1,32 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from django.shortcuts import get_list_or_404, get_object_or_404
 from .models import Movie, Review
-from .serializers.movie import MovieSerializer, MovieListSerializer
+from .serializers.movie import MovieSerializer
 from .serializers.review import ReviewSerializer
-
 from django.contrib.auth import get_user_model
-User = get_user_model()
-
 import random
+
+
+User = get_user_model()
 
 
 # 인기 영화(누구에게나 추천)
 @api_view(['GET'])
 def movie_list(request):
     movies = get_list_or_404(Movie)
-    serializer = MovieListSerializer(movies, many=True)
+    random_ten_movies = random.sample(movies, 10)
+    serializer = MovieSerializer(random_ten_movies, many=True)
     return Response(serializer.data)
 
 
 # 선호 장르(로그인유저)
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def movie_genre(request):
     user = get_object_or_404(User, pk=request.user.pk)
     my_reviews = get_list_or_404(Review, user=user)
@@ -53,12 +58,20 @@ def movie_genre(request):
     
     movies = []
     for genre in best_genre:
-        genre_movies = get_list_or_404(Movie, vote_average__gte=3, genres=genre)
+        genre_movies = get_list_or_404(Movie, vote_average__gte=6, genres=genre)
         random_five_movies = random.sample(genre_movies, 5)
         serializer = MovieSerializer(random_five_movies, many=True)
         movies.extend(serializer.data)
 
     return Response(movies)
+
+
+@api_view(['GET'])
+def movie_worldcup(request):
+    movies = get_list_or_404(Movie, vote_average__gte=6)
+    random_sixteen_movies = random.sample(movies, 16)
+    serializer = MovieSerializer(random_sixteen_movies, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -69,6 +82,8 @@ def movie_detail(request, movie_pk):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def like_movie(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     user = request.user
@@ -83,6 +98,8 @@ def like_movie(request, movie_pk):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_review(request, movie_pk):
     user = request.user
     movie = get_object_or_404(Movie, pk=movie_pk)
@@ -99,6 +116,8 @@ def create_review(request, movie_pk):
 
 
 @api_view(['PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def review_update_or_delete(request, movie_pk, review_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     review = get_object_or_404(Review, pk=review_pk)
@@ -123,3 +142,4 @@ def review_update_or_delete(request, movie_pk, review_pk):
         return update_review()
     elif request.method == 'DELETE':
         return delete_review()
+

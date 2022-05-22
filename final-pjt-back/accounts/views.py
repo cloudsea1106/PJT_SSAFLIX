@@ -1,15 +1,18 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
-
 from .serializers import ProfileSerializer
 
 
 User = get_user_model()
 
+
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     serializer = ProfileSerializer(user)
@@ -17,6 +20,8 @@ def profile(request, username):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def follow(request, user_pk):
     you = get_object_or_404(User, pk=user_pk)
     me = request.user
@@ -36,6 +41,8 @@ def follow(request, user_pk):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def movie_follow(request):
     user = get_object_or_404(User, pk=request.user.pk)
     serializer = ProfileSerializer(user)
