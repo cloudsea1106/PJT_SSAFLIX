@@ -1,54 +1,41 @@
 <template>
-  <div class="text-center mypage">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Click Me
-        </v-btn>
-      </template>
+  <div>
+    <h1>{{ profile.username }}</h1>
 
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Privacy Policy
-        </v-card-title>
-
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <h2>좋아요 한 영화</h2>
+    <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
+      <div v-for="movie in profile.like_movies" :key="movie.pk">
+        <img :src="imgUrl(movie.poster_path)" height="300">
+        <router-link :to="{ name: 'movie', params: { movieId: movie.id } }">
+          <button>
+            Detail
+          </button>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        dialog: false,
-      }
+import { mapGetters, mapActions } from 'vuex'
+
+
+export default {
+  name: 'mypageView',
+  computed: {
+    ...mapGetters(['profile']),
+  },
+  methods: {
+    ...mapActions(['fetchProfile']),
+    imgUrl: function (path) { 
+      return "https://image.tmdb.org/t/p/original" + path
     },
-  }
+  },
+  created() {
+    const payload = { username: this.$route.params.username }
+    this.fetchProfile(payload)
+  },
+}
 </script>
 
 <style>

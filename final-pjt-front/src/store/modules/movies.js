@@ -9,11 +9,15 @@ export default {
   // namespaced: true,
   state: {
     movies: [],
+    recomMovies: [],
+    worldMovies: [],
     movie: {},
   },
 
   getters: {
     movies: state => state.movies,
+    recomMovies: state => state.recomMovies,
+    worldMovies: state => state.worldMovies,
     movie: state => state.movie,
     isAuthor: (state, getters) => {
       return state.movie.user?.username === getters.currentUser.username
@@ -23,6 +27,8 @@ export default {
 
   mutations: {
     SET_MOVIES: (state, movies) => state.movies = movies,
+    SET_RECOM_MOVIES: (state, recomMovies) => state.recomMovies = recomMovies,
+    SET_WORLDCUP_MOVIES: (state, worldMovies) => state.worldMovies = worldMovies,
     SET_MOVIE: (state, movie) => state.movie = movie,
     SET_MOVIE_REVIEWS: (state, reviews) => (state.movie.reviews = reviews),
   },
@@ -44,7 +50,7 @@ export default {
         .catch(err => console.error(err.response))
     },
 
-    fetchMovie({ commit, getters }, moviePk) {
+    fetchMovie({ commit, getters }, movieId) {
       /* 단일 게시글 받아오기
       GET: movie URL (token)
         성공하면
@@ -56,7 +62,7 @@ export default {
             NotFound404 로 이동
       */
       axios({
-        url: drf.movies.movie(moviePk),
+        url: drf.movies.movie(movieId),
         method: 'get',
         headers: getters.authHeader,
       })
@@ -67,6 +73,44 @@ export default {
             router.push({ name: 'NotFound404' })
           }
         })
+    },
+
+    fetchRecomMovies({ commit, getters }) {
+      /* 영화 목록 받아오기
+      GET: movies URL (token)
+        성공하면
+          응답으로 받은 게시글들을 state.movies에 저장
+        실패하면
+          에러 메시지 표시
+      */
+      axios({
+        url: drf.movies.recommendMovie(),
+        method: 'get',
+        headers: getters.authHeader,
+      })
+        .then(res => commit('SET_RECOM_MOVIES', res.data))
+        .catch(err => {
+          console.log(drf.movies.recommendMovie())
+          console.error(err.response)})
+    },
+
+    fetchWorldcupMovies({ commit }) {
+      /* 영화 목록 받아오기
+      GET: movies URL (token)
+        성공하면
+          응답으로 받은 게시글들을 state.movies에 저장
+        실패하면
+          에러 메시지 표시
+      */
+      axios({
+        url: drf.movies.worldcupMovie(),
+        method: 'get',
+        // headers: getters.authHeader,
+      })
+        .then(res => commit('SET_WORLDCUP_MOVIES', res.data))
+        .catch(err => {
+          console.log(drf.movies.worldcupMovie())
+          console.error(err.response)})
     },
 
     // createArticle({ commit, getters }, article) {
@@ -143,7 +187,7 @@ export default {
     //   }
     // },
 
-    likeMovie({ commit, getters }, moviePk) {
+    likeMovie({ commit, getters }, movieId) {
       /* 좋아요
       POST: likeMovie URL(token)
         성공하면
@@ -152,15 +196,16 @@ export default {
           에러 메시지 표시
       */
       axios({
-        url: drf.movies.likeMovie(moviePk),
+        url: drf.movies.likeMovie(movieId),
         method: 'post',
         headers: getters.authHeader,
       })
-        .then(res => commit('SET_MOVIE', res.data))
+        .then(res => {
+          commit('SET_MOVIE', res.data)})
         .catch(err => console.error(err.response))
     },
 
-		createReview({ commit, getters }, { moviePk, content }) {
+		createReview({ commit, getters }, { movieId, content, vote }) {
       /* 리뷰 생성
       POST: reviews URL(댓글 입력 정보, token)
         성공하면
@@ -168,10 +213,9 @@ export default {
         실패하면
           에러 메시지 표시
       */
-      const review = { content }
-
+      const review = { content, vote }
       axios({
-        url: drf.movies.reviews(moviePk),
+        url: drf.movies.reviews(movieId),
         method: 'post',
         data: review,
         headers: getters.authHeader,
@@ -182,7 +226,7 @@ export default {
         .catch(err => console.error(err.response))
     },
 
-    updateReview({ commit, getters }, { moviePk, reviewPk, content }) {
+    updateReview({ commit, getters }, { movieId, reviewId, content, vote }) {
       /* 리뷰 수정
       PUT: review URL(댓글 입력 정보, token)
         성공하면
@@ -190,10 +234,10 @@ export default {
         실패하면
           에러 메시지 표시
       */
-      const review = { content }
+      const review = { content, vote }
 
       axios({
-        url: drf.movies.review(moviePk, reviewPk),
+        url: drf.movies.review(movieId, reviewId),
         method: 'put',
         data: review,
         headers: getters.authHeader,
@@ -204,7 +248,7 @@ export default {
         .catch(err => console.error(err.response))
     },
 
-    deleteReview({ commit, getters }, { moviePk, reviewPk }) {
+    deleteReview({ commit, getters }, { movieId, reviewId }) {
       /* 리뷰 삭제
       사용자가 확인을 받고
         DELETE: review URL (token)
@@ -215,7 +259,7 @@ export default {
       */
         if (confirm('정말 삭제하시겠습니까?')) {
           axios({
-            url: drf.movies.review(moviePk, reviewPk),
+            url: drf.movies.review(movieId, reviewId),
             method: 'delete',
             data: {},
             headers: getters.authHeader,

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <nav class="navbar navbar-expand-lg bg-light sticky-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -10,18 +10,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
+            <!-- 홈 -->
             <li class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
+            <!-- 마이페이지 -->
             <li class="nav-item" v-if="isLoggedIn">
-              <router-link class="nav-link" to="/mypage">My Page</router-link>
+              <router-link 
+                class="nav-link"
+                :to="{ name: 'mypageView', params: { username } }">My Page</router-link>
             </li>
+            <!-- 로그인 -->
             <li class="nav-item" v-if="!isLoggedIn">
               <login-dialog class="nav-link"></login-dialog>
             </li>
+            <!-- 회원가입 -->
             <li class="nav-item" v-if="!isLoggedIn">
               <signup-dialog class="nav-link"></signup-dialog>
             </li>
+            <!-- 로그아웃 -->
             <li class="nav-item" v-if="isLoggedIn">
               <logout-view class="nav-link"></logout-view>
             </li>
@@ -30,7 +37,7 @@
       </div>
     </nav>
     <router-view/>
-  </div>
+  </v-app>
 </template>
 
 <script>

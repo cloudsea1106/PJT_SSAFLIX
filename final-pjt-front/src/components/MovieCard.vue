@@ -18,10 +18,14 @@
             absolute
             color="#032358"
           >
-            <movie-detail
-              :movie="movie"
+            <router-link
+              :to="{ name: 'movie', params: {movieId: movie.id} }"
             >
-            </movie-detail>
+              <button class="btn btn-primary">
+                DETAIL <br>
+                {{ movie.vote_average }}
+              </button>
+            </router-link>
           </v-overlay>
         </v-fade-transition>
       </v-card>
@@ -30,12 +34,7 @@
 </template>
 
 <script>
-import MovieDetail from '@/components/MovieDetail.vue'
-
 export default {
-  components: {
-    MovieDetail
-  },
   props: {
     movie: Object,
   },

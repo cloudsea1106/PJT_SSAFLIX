@@ -20,6 +20,7 @@ export default {
     // /movies/1/
     movie: moviePk => HOST + MOVIES + `${moviePk}/`,
     recommendMovie: () => HOST + MOVIES + 'recommend/genre/',
+    worldcupMovie: () => HOST + MOVIES + 'recommend/worldcup/',
     likeMovie: moviePk => HOST + MOVIES + `${moviePk}/` + 'like/',
     reviews: moviePk => HOST + MOVIES + `${moviePk}/` + 'reviews/',
     review: (moviePk, reviewPk) =>
