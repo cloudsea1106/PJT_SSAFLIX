@@ -36,7 +36,7 @@
           <v-spacer></v-spacer>
           <button
             class="btn btn-secondary"
-            @click="dialog = false"
+            @click="cancelLogin"
           >
             Cancel
           </button>
@@ -61,7 +61,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['login'])
+    ...mapActions(['login']),
+    cancelLogin: function () {
+      this.credentials.username = ''
+      this.credentials.password = ''
+      this.dialog = false
+    }
   },
 }
 </script>

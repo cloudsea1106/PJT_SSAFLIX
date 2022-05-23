@@ -19,26 +19,31 @@
         <v-card-title>
           <span class="text-h5">Use Google's location service?</span>
         </v-card-title>
-        <v-card-text>
-          Lorem ipsum dolor sit amet, semper quis, sapien id natoque elit. Nostra urna at, magna at neque sed sed ante imperdiet, dolor mauris cursus velit, velit non, sem nec. Volutpat sem ridiculus placerat leo, augue in, duis erat proin condimentum in a eget, sed fermentum sed vestibulum varius ac, vestibulum volutpat orci ut elit eget tortor. Ultrices nascetur nulla gravida ante arcu. Pharetra rhoncus morbi ipsum, nunc tempor debitis, ipsum pellentesque, vitae id quam ut mauris dui tempor, aptent non. Quisque turpis. Phasellus quis lectus luctus orci eget rhoncus. Amet donec vestibulum mattis commodo, nulla aliquet, nibh praesent, elementum nulla. Sit lacus pharetra tempus magna neque pellentesque, nulla vel erat.
-          Sodales aliquam, sed vestibulum nullam arcu sit risus arcu, id luctus vitae lorem nibh, integer nec nullam class cursus mi, purus arcu lectus. Vel ante suscipit volutpat potenti mattis sed, wisi eu placerat aliquam erat, lectus morbi lobortis at assumenda. Consequat neque purus ipsum voluptas odio, netus vestibulum ut nec, suspendisse pellentesque nec enim in. Wisi dictum sed semper a, ipsum erat tellus habitasse est, erat sem ornare, vitae quisque ultricies. Dui sed blandit. Tempor et faucibus justo sed luctus, nec vitae vitae. Nunc nibh pede, ipsum vestibulum aenean leo ante ultricies, nam cras quis sed penatibus amet. In mauris a. Integer metus mauris tortor, et rutrum vestibulum ultricies, ut phasellus in ullamcorper ut mollit, eu justo. Cursus pretium venenatis.
-        </v-card-text>
+        <form @submit.prevent="signup(credentials)">
+          <div>
+            <label for="username">Username: </label>
+            <input  v-model="credentials.username" type="text" id="username" required/>
+          </div>
+          <div>
+            <label for="password1">Password: </label>
+            <input v-model="credentials.password1" type="password" id="password1" required />
+          </div>
+          <div>
+            <label for="password2">Password Confirmation:</label>
+            <input v-model="credentials.password2" type="password" id="password2" required />
+          </div>
+          <div>
+            <button class="btn btn-primary">Signup</button>
+          </div>
+        </form>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
+          <button
+            class="btn btn-secondary"
+            @click="cancelSignup"
           >
-            Disagree
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
-            Agree
-          </v-btn>
+            Cancel
+          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -46,11 +51,35 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        dialog: false,
+import { mapActions, /*mapGetters*/ } from 'vuex'
+// import AccountErrorList from '@/components/AccountErrorList.vue'
+
+export default {
+  name: 'SignupView',
+  // components: {
+  //   AccountErrorList,
+  // },
+  data() {
+    return {
+      dialog: false,
+      credentials: {
+        username: '',
+        password1: '',
+        password2: '',
       }
-    },
-  }
+    }
+  },
+  // computed: {
+  //   ...mapGetters(['authError'])
+  // },
+  methods: {
+    ...mapActions(['signup']),
+    cancelSignup: function () {
+      this.credentials.username = ''
+      this.credentials.password1 = ''
+      this.credentials.password2 = ''
+      this.dialog = false
+    }
+  },
+}
 </script>
