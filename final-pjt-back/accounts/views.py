@@ -14,6 +14,8 @@ User = get_user_model()
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def profile(request, username):
+    # 유저네임에 해당하는 사람의 프로필
+
     user = get_object_or_404(User, username=username)
     serializer = ProfileSerializer(user)
     return Response(serializer.data)
@@ -23,6 +25,8 @@ def profile(request, username):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def follow(request, user_pk):
+    # 유저간 이루어지는 팔로우 기능
+
     you = get_object_or_404(User, pk=user_pk)
     me = request.user
 
@@ -44,10 +48,11 @@ def follow(request, user_pk):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def movie_follow(request):
+    # 나와 맞팔인 사람들이 좋아요를 누른 영화 추천
+
     user = get_object_or_404(User, pk=request.user.pk)
     serializer = ProfileSerializer(user)
     followings = serializer.data.get('followings')  # 내가 팔로잉 하는 사람들
-    # followers = serializer.data.get('followers')
 
     me = {
         "pk": request.user.pk,
@@ -61,9 +66,9 @@ def movie_follow(request):
         following_serializer = ProfileSerializer(following_user)
         following_following = following_serializer.data.get('followings')  # 내가 팔로잉 하는 사람의 팔로잉 하는 사람
 
-        if me in following_following:
+        if me in following_following:  # 서로 팔로우 하는 상태 = 맞팔
             follow_back.append(following_pk)  
-            # 인자로 following을 append하면 pk와 username 키를 가진 객체 추가, 여기서는 간단히 pk만 추가했음
+            # 인자로 following을 append하면 pk와 username 키를 가진 딕셔너리 추가, 여기서는 간단히 pk만 추가했음
 
     # return Response(follow_back)
 
@@ -73,7 +78,9 @@ def movie_follow(request):
         serializer = ProfileSerializer(fb_user)
         like_movies = serializer.data.get('like_movies')
 
-        fb_like_movies.extend(like_movies)
+        for like_movie in like_movies:  # 중복 추천 방지 위함
+            if like_movie not in fb_like_movies:
+                fb_like_movies.append(like_movie)
 
     return Response(fb_like_movies)
 

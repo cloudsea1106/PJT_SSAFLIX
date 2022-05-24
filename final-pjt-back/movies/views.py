@@ -17,9 +17,11 @@ User = get_user_model()
 # 인기 영화(누구에게나 추천)
 @api_view(['GET'])
 def movie_list(request):
+    # 인기 영화 리스트 중 랜덤으로 12개를 추출하여 보여주는 방식
+    
     movies = get_list_or_404(Movie)
-    random_ten_movies = random.sample(movies, 10)
-    serializer = MovieSerializer(random_ten_movies, many=True)
+    random_twelve_movies = random.sample(movies, 12)
+    serializer = MovieSerializer(random_twelve_movies, many=True)
     return Response(serializer.data)
 
 
@@ -28,10 +30,14 @@ def movie_list(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def movie_genre(request):
+    # 내가 리뷰를 남긴 영화들의 장르들 중 가장 많은 장르 1~2위를 선출
+    # 리뷰를 남긴 사람 대상, 장르가 1개 뿐이라면 1개에 대해서만
+
     user = get_object_or_404(User, pk=request.user.pk)
     my_reviews = get_list_or_404(Review, user=user)
     serializer = ReviewSerializer(my_reviews, many=True)
     
+    # 나의 리뷰 기반 선호 장르를 알아보기 위해 리뷰에 해당하는 장르 정리 
     genres_dic = dict()
     for movie in serializer.data:
         movie_pk = movie.get('movie')
@@ -47,7 +53,7 @@ def movie_genre(request):
     
     genres_list = list(genres_dic.items())
     genres_list.sort(key=lambda x: x[1], reverse=True)
-    best_genre = []
+    best_genre = []  # 선호 장르 리스트
     
     if len(genres_list) >= 2:  # 2개 이상이면
         best_genre.append(genres_list[0][0])
@@ -56,18 +62,28 @@ def movie_genre(request):
     elif len(genres_list) == 1:  # 1개 뿐이면
         best_genre.append(genres_list[0][0])
     
-    movies = []
+    movies = []  # 추천 영화 리스트
     for genre in best_genre:
         genre_movies = get_list_or_404(Movie, vote_average__gte=6, genres=genre)
-        random_five_movies = random.sample(genre_movies, 5)
-        serializer = MovieSerializer(random_five_movies, many=True)
-        movies.extend(serializer.data)
+
+        cnt = 0
+        while True:
+            if cnt == 6:
+                break
+            random_movie = random.choice(genre_movies)
+            serializer = MovieSerializer(random_movie)
+            if serializer.data not in movies:
+                # 하나의 장르 내에서, 그리고 두 개의 장르 간에 중복 추천 방지 위함
+                movies.append(serializer.data)
+                cnt += 1
 
     return Response(movies)
 
 
 @api_view(['GET'])
 def movie_worldcup(request):
+    # 랜덤으로 16개의 영화를 추출하여 더 마음에 드는 영화를 유저가 직접 선택하도록 함
+
     movies = get_list_or_404(Movie, vote_average__gte=6)
     random_sixteen_movies = random.sample(movies, 16)
     serializer = MovieSerializer(random_sixteen_movies, many=True)
@@ -76,6 +92,8 @@ def movie_worldcup(request):
 
 @api_view(['GET'])
 def movie_detail(request, movie_pk):
+    # pk에 해당하는 영화의 디테일 정보
+
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
@@ -85,6 +103,8 @@ def movie_detail(request, movie_pk):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def like_movie(request, movie_pk):
+    # 영화에 대한 좋아요 기능
+
     movie = get_object_or_404(Movie, pk=movie_pk)
     user = request.user
     if movie.like_users.filter(pk=user.pk).exists():
@@ -101,6 +121,8 @@ def like_movie(request, movie_pk):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_review(request, movie_pk):
+    # 리뷰 작성 기능
+
     user = request.user
     movie = get_object_or_404(Movie, pk=movie_pk)
     
@@ -108,8 +130,8 @@ def create_review(request, movie_pk):
     if serializer.is_valid(raise_exception=True):
         serializer.save(movie=movie, user=user)
 
-        # 기존 serializer 가 return 되면, 단일 comment 만 응답으로 받게됨.
-        # 사용자가 댓글을 입력하는 사이에 업데이트된 comment 확인 불가 => 업데이트된 전체 목록 return 
+        # 기존 serializer 가 return 되면, 단일 review 만 응답으로 받게됨.
+        # 사용자가 댓글을 입력하는 사이에 업데이트된 review 확인 불가 => 업데이트된 전체 목록 return 
         reviews = movie.review_set.all()
         serializer = ReviewSerializer(reviews, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -119,6 +141,8 @@ def create_review(request, movie_pk):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def review_update_or_delete(request, movie_pk, review_pk):
+    # 리뷰 업데이트, 삭제 기능
+
     movie = get_object_or_404(Movie, pk=movie_pk)
     review = get_object_or_404(Review, pk=review_pk)
 

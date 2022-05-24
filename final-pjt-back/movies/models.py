@@ -24,7 +24,6 @@ class Movie(models.Model):
 
 
 class Review(models.Model):
-    title = models.CharField(max_length=200)
     content = models.TextField()
     vote = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,4 +32,4 @@ class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.title
+        return self.content

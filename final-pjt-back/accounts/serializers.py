@@ -10,7 +10,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         
         class Meta:
             model = Movie
-            fields = ('pk', 'title',)
+            fields = '__all__'
 
     class UserSerializer(serializers.ModelSerializer):
 
