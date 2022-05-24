@@ -68,7 +68,7 @@ def movie_follow(request):
 
         if me in following_following:  # 서로 팔로우 하는 상태 = 맞팔
             follow_back.append(following_pk)  
-            # 인자로 following을 append하면 pk와 username 키를 가진 딕셔너리 추가, 여기서는 간단히 pk만 추가했음
+            # 인자로 following을 append하면 pk와 username 키를 가진 객체 추가, 여기서는 간단히 pk만 추가했음
 
     # return Response(follow_back)
 
