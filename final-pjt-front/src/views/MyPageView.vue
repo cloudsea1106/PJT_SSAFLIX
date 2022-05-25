@@ -8,36 +8,34 @@
 
     <h2>좋아요 한 영화</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-      <div v-for="movie in profile.like_movies" :key="movie.pk">
-        <img :src="imgUrl(movie.poster_path)" height="300">
-        <router-link :to="{ name: 'movie', params: { movieId: movie.id } }">
-          <button>
-            Detail
-          </button>
-        </router-link>
-      </div>
+      <movie-card
+        v-for="movie in profile.like_movies"
+        :key="movie.id"
+        :movie="movie"
+      ></movie-card>
     </div>
 
     <h2>친구가 좋아하는 영화</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-      <div v-for="movie in followMovies" :key="movie.pk">
-        <img :src="imgUrl(movie.poster_path)" height="300">
-        <router-link :to="{ name: 'movie', params: { movieId: movie.id } }">
-          <button>
-            Detail
-          </button>
-        </router-link>
-      </div>
+      <movie-card
+        v-for="movie in followMovies"
+        :key="movie.id"
+        :movie="movie"
+      ></movie-card>
     </div>
   </div>
 </template>
 
 <script>
+import MovieCard from '@/components/MovieCard.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 
 export default {
   name: 'mypageView',
+  components: {
+    MovieCard,
+  },
   computed: {
     ...mapGetters(['profile','currentUser', 'followMovies']),
     followingCount() {

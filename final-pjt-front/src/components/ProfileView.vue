@@ -10,32 +10,27 @@
 
     <h2>{{ profile.username }}이 좋아요 한 영화</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-      <div v-for="movie in profile.like_movies" :key="movie.pk">
-        <img :src="imgUrl(movie.poster_path)" height="300">
-        <router-link :to="{ name: 'movie', params: { movieId: movie.id } }">
-          <button>
-            Detail
-          </button>
-        </router-link>
-      </div>
+      <movie-card
+        v-for="movie in profile.like_movies"
+        :key="movie.id"
+        :movie="movie"
+      ></movie-card>
     </div>
 
     <h2>{{ profile.username }}의 친구가 좋아하는 영화</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-      <div v-for="movie in followMovies" :key="movie.pk">
-        <img :src="imgUrl(movie.poster_path)" height="300">
-        <router-link :to="{ name: 'movie', params: { movieId: movie.id } }">
-          <button>
-            Detail
-          </button>
-        </router-link>
-      </div>
+      <movie-card
+        v-for="movie in followMovies"
+        :key="movie.id"
+        :movie="movie"
+      ></movie-card>
     </div>
   </div>
 </template>
 
 <script>
 import FollowButton from '@/components/FollowButton.vue'
+import MovieCard from '@/components/MovieCard.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 
@@ -43,6 +38,7 @@ export default {
   name: 'profileView',
   components: {
     FollowButton,
+    MovieCard,
   },
   computed: {
     ...mapGetters(['profile','currentUser', 'followMovies']),
@@ -51,7 +47,7 @@ export default {
     },
     follwerCount() {
       return this.profile.followers_count
-    }
+    },
   },
   methods: {
     ...mapActions(['fetchProfile', 'followUserMovies']),

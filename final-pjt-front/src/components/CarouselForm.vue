@@ -1,13 +1,11 @@
 <template>
   <v-hover>
     <template v-slot:default="{ hover }">
-      <v-card
-        class="px-0 mx-1"
-        width="250"
-      >
+      <div class="border-0">
         <v-img
           :src="imgUrl"
-          height='375'
+          width="600"
+          height="900"
         ></v-img>
 
         <v-fade-transition>
@@ -20,18 +18,19 @@
               :to="{ name: 'movie', params: {movieId: movie.id} }"
             >
               <button class="btn btn-primary">
-                DETAIL <br>
+                {{ movie.title }} <br>
                 {{ movie.vote_average }}
               </button>
             </router-link>
           </v-overlay>
         </v-fade-transition>
-      </v-card>
+      </div>
     </template>
   </v-hover>
 </template>
 
 <script>
+
 export default {
   props: {
     movie: Object,

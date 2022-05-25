@@ -72,10 +72,7 @@ export default {
     // }
   },
   methods: {
-    ...mapActions([
-      'fetchMovie',
-      'likeMovie',
-    ]),
+    ...mapActions(['fetchMovie', 'likeMovie']),
     goBack() {
       this.$router.go(-1)
     }

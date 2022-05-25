@@ -175,7 +175,7 @@ export default {
         })
     },
 
-    followUser({ /*commit,*/ getters }, userPk ) {
+    followUser({ commit, getters }, userPk ) {
       /*
       GET: profile URL로 요청보내기
         성공하면
@@ -186,9 +186,9 @@ export default {
         method: 'post',
         headers: getters.authHeader,
       })
-        // .then(res => {
-        //   console.log(res)
-        // })
+        .then(res => {
+          commit('SET_PROFILE', res.data)})
+        .catch(err => console.error(err.response))
     },
 
     followUserMovies({ commit, getters } ) {
