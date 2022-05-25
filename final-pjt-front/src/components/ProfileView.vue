@@ -1,12 +1,14 @@
 <template>
   <div>
-    <h1>{{ profile.username }}</h1>
+    <h1>{{ profile.username }}'s Profile</h1>
 
     <h5>팔로잉: {{ followingCount }} 명</h5>
     <h5>팔로워: {{ follwerCount }} 명</h5>
 
 
-    <h2>좋아요 한 영화</h2>
+    <follow-button/>
+
+    <h2>{{ profile.username }}이 좋아요 한 영화</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
       <div v-for="movie in profile.like_movies" :key="movie.pk">
         <img :src="imgUrl(movie.poster_path)" height="300">
@@ -18,7 +20,7 @@
       </div>
     </div>
 
-    <h2>친구가 좋아하는 영화</h2>
+    <h2>{{ profile.username }}의 친구가 좋아하는 영화</h2>
     <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
       <div v-for="movie in followMovies" :key="movie.pk">
         <img :src="imgUrl(movie.poster_path)" height="300">
@@ -33,11 +35,15 @@
 </template>
 
 <script>
+import FollowButton from '@/components/FollowButton.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 
 export default {
-  name: 'mypageView',
+  name: 'profileView',
+  components: {
+    FollowButton,
+  },
   computed: {
     ...mapGetters(['profile','currentUser', 'followMovies']),
     followingCount() {

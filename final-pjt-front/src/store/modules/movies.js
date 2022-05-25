@@ -90,7 +90,6 @@ export default {
       })
         .then(res => commit('SET_RECOM_MOVIES', res.data))
         .catch(err => {
-          console.log(drf.movies.recommendMovie())
           console.error(err.response)})
     },
 
@@ -109,7 +108,6 @@ export default {
       })
         .then(res => commit('SET_WORLDCUP_MOVIES', res.data))
         .catch(err => {
-          console.log(drf.movies.worldcupMovie())
           console.error(err.response)})
     },
 

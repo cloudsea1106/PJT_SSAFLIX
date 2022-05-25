@@ -6,7 +6,11 @@
       <h1>선택해 주세요</h1>
       <hr>
       <div v-if="!left">
-        <v-btn v-if="finalRound" @click="goNext">결승전</v-btn>
+        <button
+          v-if="finalRound"
+          @click="goNext"
+          class="btn btn-warning"
+        >결승전</button>
         <v-btn v-else @click="goNext">{{ roundNum }}강 시작하기</v-btn>
       </div>
       <v-row
@@ -43,6 +47,13 @@
             :movie="left"
           ></worldcup-choice>
         </v-col>
+        <router-link
+          :to="{ name: 'movie', params: {movieId: left.id} }"
+        >
+          <button class="btn btn-primary">
+            DETAIL <br>
+          </button>
+        </router-link>
 
       </v-row>
     </div>

@@ -33,16 +33,8 @@
 
     <review-list :reviews="movie.review_set"></review-list>
 
-    <p>홈으로</p>
-    <div>
-      <router-link to="/">
-        <button 
-          class="btn btn-secondary" 
-        >
-          BACK
-        </button>
-      </router-link>
-    </div>
+    <p>뒤로가기</p>
+    <button @click="goBack" type="button">BACK</button>
   </div>
 </template>
 
@@ -71,12 +63,22 @@ export default {
     previewUrl: function () {
       return "https://www.youtube.com/results?search_query=" + this.movie.title + " 예고편"
     },
+    // movieGenre() {
+    //   const genres = []
+    //   this.movie.genres.forEach(obj => {
+    //     genres.push(obj.name)
+    //   })
+    //   return genres
+    // }
   },
   methods: {
     ...mapActions([
       'fetchMovie',
       'likeMovie',
     ]),
+    goBack() {
+      this.$router.go(-1)
+    }
   },
   created() {
     this.fetchMovie(this.movieId)

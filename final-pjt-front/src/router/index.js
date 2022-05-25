@@ -3,8 +3,10 @@ import VueRouter from 'vue-router'
 
 import HomeView from '../views/HomeView.vue'
 import MyPageView from '../views/MyPageView.vue'
+import ProfileView from '../components/ProfileView.vue'
 import WorldcupView from '../views/WorldcupView.vue'
 import MovieDetail from '../components/MovieDetail.vue'
+import NotFound404 from '../views/NotFound404.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +22,11 @@ const routes = [
     component: MyPageView
   },
   {
+    path: '/profile/:username',
+    name: 'profileView',
+    component: ProfileView
+  },
+  {
     path: '/movies/:movieId',
     name: 'movie',
     component: MovieDetail
@@ -28,6 +35,15 @@ const routes = [
     path: '/worldcup',
     name: 'worldcupView',
     component: WorldcupView
+  },
+  {
+    path: '/404',
+    name: 'NotFound404',
+    component: NotFound404
+  },
+  {
+    path: '*',
+    redirect: '/404'
   },
 ]
 

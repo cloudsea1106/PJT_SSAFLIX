@@ -11,6 +11,7 @@ export default {
     currentUser: {},
     profile: {},
     authError: null,
+    followMovies: [],
   },
   // 모든 state는 getters 를 통해서 접근한다.
   getters: {
@@ -18,14 +19,16 @@ export default {
     currentUser: state => state.currentUser,
     profile: state => state.profile,
     authError: state => state.authError,
-    authHeader: state => ({ Authorization: `Token ${state.token}`})
+    authHeader: state => ({ Authorization: `Token ${state.token}`}),
+    followMovies: state => state.followMovies
   },
 
   mutations: {
     SET_TOKEN: (state, token) => state.token = token,
     SET_CURRENT_USER: (state, user) => state.currentUser = user,
     SET_PROFILE: (state, profile) => state.profile = profile,
-    SET_AUTH_ERROR: (state, error) => state.authError = error
+    SET_AUTH_ERROR: (state, error) => state.authError = error,
+    SET_FOLLOW_MOVIES: (state, movies) => state.followMovies = movies
   },
 
   actions: {
@@ -170,6 +173,39 @@ export default {
         .then(res => {
           commit('SET_PROFILE', res.data)
         })
+    },
+
+    followUser({ /*commit,*/ getters }, userPk ) {
+      /*
+      GET: profile URL로 요청보내기
+        성공하면
+          state.profile에 저장
+      */
+      axios({
+        url: drf.accounts.follow(userPk),
+        method: 'post',
+        headers: getters.authHeader,
+      })
+        // .then(res => {
+        //   console.log(res)
+        // })
+    },
+
+    followUserMovies({ commit, getters } ) {
+      /*
+      GET: profile URL로 요청보내기
+        성공하면
+          state.profile에 저장
+      */
+      axios({
+        url: drf.accounts.followMovies(),
+        method: 'get',
+        headers: getters.authHeader,
+      })
+        .then(res => {
+          commit('SET_FOLLOW_MOVIES', res.data)})
+        .catch(err => {
+          console.error(err.response)})
     },
   },
 }
