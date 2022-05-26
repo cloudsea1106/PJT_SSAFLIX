@@ -20,9 +20,15 @@
               :to="{ name: 'movie', params: {movieId: movie.id} }"
             >
               <button class="btn btn-primary">
-                DETAIL <br>
-                {{ movie.vote_average }}
+                {{ movie.title }}
               </button>
+              <br>
+              <span v-for="(i, idx) in parseInt(movie.vote_average / 2)" :key="idx">
+                <i style="color:yellow;" class="fas fa-star"></i>
+              </span>
+              <span v-if="parseInt(movie.vote_average) % 2 === 1">
+                <i style="color:yellow;" class="fas fa-star-half"></i>
+              </span>
             </router-link>
           </v-overlay>
         </v-fade-transition>

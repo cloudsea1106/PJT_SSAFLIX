@@ -1,5 +1,6 @@
 <template>
-  <div class="review-list" v-if="isLoggedIn">
+  <div class="review-list rounded" v-if="isLoggedIn">
+    <review-list-form></review-list-form>
     <ul>
       <review-list-item 
         v-for="review in reviews" 
@@ -8,7 +9,6 @@
       </review-list-item>        
     </ul>
 
-    <review-list-form></review-list-form>
   </div>
 </template>
 

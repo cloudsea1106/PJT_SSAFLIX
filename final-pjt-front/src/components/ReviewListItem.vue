@@ -1,6 +1,8 @@
 <template>
   <li class="review-list-item">
-    <router-link :to="{ name: 'profileView', params: { username: review.user.username } }">
+    <router-link 
+    :to="{ name: 'profileView', params: { username: review.user.username } }"
+    class="text-decoration-none">
       {{ review.user.username }}
     </router-link>: 
     
@@ -9,12 +11,13 @@
     <br>
 
     <span v-if="isEditing">
-      <input type="text" v-model="payload.content">
-      <select name="rate" id="rate" v-model="payload.vote">
+      <input type="text" v-model="payload.content" class="text-white mx-3">
+      <select name="rate" id="rate" v-model="payload.vote" class="text-white me-3">
       <option
         :value="rate"
         v-for="(rate, idx) in [0, 1, 2, 3, 4, 5]"
         :key="idx"
+        class="bg-black"
       >{{ rate }}
       </option>
     </select>
@@ -26,6 +29,7 @@
       <button @click="switchIsEditing">Edit</button> |
       <button @click="deleteReview(payload)">Delete</button>
     </span>
+    <hr>
   </li>
 </template>
 
@@ -66,8 +70,4 @@ export default {
 </script>
 
 <style>
-.review-list-item {
-  border: 1px solid green;
-
-}
 </style>

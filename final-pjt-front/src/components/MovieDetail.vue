@@ -1,43 +1,54 @@
 <template>
-  <div>
-    <!-- 포스터 -->
-    <div>
-      <img :src="imgUrl" alt="" height="500">
-    </div>
-    <!-- 제목 -->
-    <h1>{{ movie.title }}</h1>
+  <div class="container">
+    <div class="row">
+      <!-- 포스터 -->
+      <div class="col-6">
+        <img :src="imgUrl" alt="" class="" id="poster">
+      </div>
+      <div class="row col-6 align-items-center">
+        <!-- 제목 -->
+        <h1>{{ movie.title }}</h1>
 
-    <p>줄거리</p>
-    <p>{{ movie.overview }}</p>
+        <div>
+          <span>줄거리: </span>
+          <span>{{ movie.overview }}</span>
+        </div>
 
-    <p>평점</p>
-    <p>{{ movie.vote_average }}</p>
+        <div>
+          <span>평점: </span>
+          <span>{{ movie.vote_average }}</span>
+        </div>
 
-    <p>장르</p>
-    <p>{{ movieGenre }}</p>
+        <div>
+          <span>장르: </span>
+          <span>{{ movieGenre }}</span>
+        </div>
 
-    <div v-if="isLoggedIn">
-      <p>좋아요</p>
-      <div>
-        Likeit:
-        <button
-          @click="likeMovie(movieId)"
-        >{{ likeCount }}</button>
+        <div v-if="isLoggedIn">
+          <p>좋아요</p>
+          <div>
+            Likeit:
+            <button
+              @click="likeMovie(movieId)"
+            >{{ likeCount }}</button>
+          </div>
+        </div>
+        <span>예고편 </span>
+        <span>
+          <a :href="previewUrl" target="_blank">
+            <v-btn depressed color="primary">Preview</v-btn>
+          </a>
+        </span>
       </div>
 
+      <div class="col mb-5">
+        <review-list :reviews="movieReviews"></review-list>
+      </div>
     </div>
 
-    <p>예고편</p>
-    <div>
-      <a :href="previewUrl" target="_blank">
-        <v-btn depressed color="primary">Preview</v-btn>
-      </a>
-    </div>
 
-    <review-list :reviews="movie.review_set"></review-list>
-
-    <p>뒤로가기</p>
-    <button @click="goBack" type="button">BACK</button>
+    <span>뒤로가기 </span>
+    <button @click="goBack" type="button" class="btn btn-primary">BACK</button>
   </div>
 </template>
 
@@ -56,7 +67,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['movie', 'isLoggedIn']),
+    ...mapGetters(['movie', 'isLoggedIn', 'movieReviews']),
     likeCount() {
       return this.movie.like_users?.length
     },
@@ -89,5 +100,7 @@ export default {
 </script>
 
 <style>
-
+#poster {
+  height: 500px;
+}
 </style>
