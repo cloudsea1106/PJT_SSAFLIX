@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <nav class="navbar navbar-expand-lg bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg bg-light sticky-top bg-black">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
           <img alt="Vue logo" src="./assets/logo.png" height="30">
@@ -12,12 +12,12 @@
           <ul class="navbar-nav">
             <!-- 홈 -->
             <li class="nav-item">
-              <router-link class="nav-link" to="/">Home</router-link>
+              <router-link class="nav-link text-primary" to="/">Home</router-link>
             </li>
             <!-- 마이페이지 -->
             <li class="nav-item" v-if="isLoggedIn">
               <router-link 
-                class="nav-link"
+                class="nav-link text-primary"
                 :to="{ name: 'mypageView', params: { username } }">My Page</router-link>
             </li>
             <!-- 로그인 -->
@@ -76,7 +76,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #ffffff;
+  background-color: black;
 }
 
 nav {
@@ -88,6 +89,7 @@ nav {
 
     &.router-link-exact-active {
       color: #42b983;
+      font-weight: bold;
     }
   }
 }

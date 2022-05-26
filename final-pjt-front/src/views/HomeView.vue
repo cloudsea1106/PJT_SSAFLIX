@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="container-fluid mx-0">
+    <div class="row justify-content-center">
       <carousel-3d :width="598" :height="898" :display="11" :space="500">
         <slide v-for="(movie, idx) in movies" :index="idx" :key="idx" class="border-0">
           <carousel-form :movie="movie"></carousel-form>
@@ -8,16 +8,36 @@
       </carousel-3d>
     </div>
 
-    <user-search></user-search>
+    <user-search v-if="isLoggedIn"></user-search>
 
     <div v-if="isLoggedIn">
-      <h2>Recommend</h2>
-      <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-        <movie-card
-          v-for="movie in recomMovies"
-          :key="movie.id"
-          :movie="movie"
-        ></movie-card>
+      <h2 class="row justify-content-center">Recommend</h2>
+      <div class="row justify-content-center">
+        <vue-glide v-if="recomMovies.length"
+          data-glide-el="track"
+          ref="slider"
+          type="slider"
+          :bound="true"
+          :per-view="10"
+          :dragThreshold="100"
+          :gap="10"
+          :breakpoints="{
+            2800: {perView: 8},
+            2400: {perView: 7},
+            2000: {perView: 6},
+            1800: {perView: 5},
+            1400: {perView: 4},
+            1200: {perView: 3},
+            800: {perView: 2},
+            400: {perView: 1}
+            }"
+        >
+          <vue-glide-slide v-for="(movie, idx) in recomMovies" :key="idx">
+            <movie-card
+              :movie="movie"
+            ></movie-card>
+          </vue-glide-slide>
+        </vue-glide>
       </div>
     </div>
 
@@ -37,6 +57,7 @@ import UserSearch from '@/components/UserSearch.vue'
 import CarouselForm from '@/components/CarouselForm.vue'
 import { mapActions, mapGetters } from 'vuex'
 import { Carousel3d, Slide } from 'vue-carousel-3d'
+import { Glide, GlideSlide } from 'vue-glide-js' 
 
 export default {
   name: 'homeView',
@@ -46,10 +67,11 @@ export default {
     Carousel3d,
     Slide,
     CarouselForm,
+    [Glide.name]: Glide,
+    [GlideSlide.name]: GlideSlide,
   },
   computed: {
-    ...mapGetters(['movies', 'recomMovies']),
-    ...mapGetters(['isLoggedIn']),
+    ...mapGetters(['movies', 'recomMovies', 'isLoggedIn']),
   },
   methods: {
     ...mapActions(['fetchMovies', 'fetchRecomMovies'])

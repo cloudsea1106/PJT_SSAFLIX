@@ -1,6 +1,6 @@
 <template>
   <li class="review-list-item">
-    <router-link :to="{ name: 'mypageView', params: { username: review.user.username } }">
+    <router-link :to="{ name: 'profileView', params: { username: review.user.username } }">
       {{ review.user.username }}
     </router-link>: 
     

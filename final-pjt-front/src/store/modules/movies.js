@@ -50,7 +50,7 @@ export default {
         .catch(err => console.error(err.response))
     },
 
-    fetchMovie({ commit, getters }, movieId) {
+    fetchMovie({ commit, /*getters*/ }, movieId) {
       /* 단일 게시글 받아오기
       GET: movie URL (token)
         성공하면
@@ -64,7 +64,7 @@ export default {
       axios({
         url: drf.movies.movie(movieId),
         method: 'get',
-        headers: getters.authHeader,
+        //headers: getters.authHeader,
       })
         .then(res => commit('SET_MOVIE', res.data))
         .catch(err => {

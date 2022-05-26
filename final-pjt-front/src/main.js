@@ -6,8 +6,13 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 // vuetify dialog
 import VuetifyDialog from 'vuetify-dialog'
+// glide
+import VueGlide from 'vue-glide-js'
+import 'vue-glide-js/dist/vue-glide.css'
 
 Vue.config.productionTip = false
+
+Vue.use(VueGlide)
 
 new Vue({
   vuetify,

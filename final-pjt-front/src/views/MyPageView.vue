@@ -5,23 +5,70 @@
     <h5>팔로잉: {{ followingCount }} 명</h5>
     <h5>팔로워: {{ follwerCount }} 명</h5>
 
-
-    <h2>좋아요 한 영화</h2>
-    <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-      <movie-card
-        v-for="movie in profile.like_movies"
-        :key="movie.id"
-        :movie="movie"
-      ></movie-card>
+    <div v-if="profile.like_movies !== undefined">
+      <h2>좋아요 한 영화</h2>
+      <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
+        <div class="row justify-content-center">
+          <vue-glide v-if="profile.like_movies.length"
+            data-glide-el="track"
+            ref="slider"
+            type="slider"
+            :bound="true"
+            :per-view="10"
+            :dragThreshold="100"
+            :gap="10"
+            :breakpoints="{
+              2800: {perView: 8},
+              2400: {perView: 7},
+              2000: {perView: 6},
+              1800: {perView: 5},
+              1400: {perView: 4},
+              1200: {perView: 3},
+              800: {perView: 2},
+              400: {perView: 1}
+              }"
+          >
+            <vue-glide-slide v-for="(movie, idx) in profile.like_movies" :key="idx">
+              <movie-card
+                :movie="movie"
+              ></movie-card>
+            </vue-glide-slide>
+          </vue-glide>
+        </div>
+      </div>
     </div>
 
-    <h2>친구가 좋아하는 영화</h2>
-    <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-      <movie-card
-        v-for="movie in followMovies"
-        :key="movie.id"
-        :movie="movie"
-      ></movie-card>
+    <div v-if="followMovies !== undefined">
+      <h2>친구가 좋아하는 영화</h2>
+      <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
+        <div class="row justify-content-center">
+          <vue-glide v-if="followMovies.length"
+            data-glide-el="track"
+            ref="slider"
+            type="slider"
+            :bound="true"
+            :per-view="10"
+            :dragThreshold="100"
+            :gap="10"
+            :breakpoints="{
+              2800: {perView: 8},
+              2400: {perView: 7},
+              2000: {perView: 6},
+              1800: {perView: 5},
+              1400: {perView: 4},
+              1200: {perView: 3},
+              800: {perView: 2},
+              400: {perView: 1}
+              }"
+          >
+            <vue-glide-slide v-for="(movie, idx) in followMovies" :key="idx">
+              <movie-card
+                :movie="movie"
+              ></movie-card>
+            </vue-glide-slide>
+          </vue-glide>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -29,12 +76,15 @@
 <script>
 import MovieCard from '@/components/MovieCard.vue'
 import { mapGetters, mapActions } from 'vuex'
+import { Glide, GlideSlide } from 'vue-glide-js' 
 
 
 export default {
   name: 'mypageView',
   components: {
     MovieCard,
+    [Glide.name]: Glide,
+    [GlideSlide.name]: GlideSlide,
   },
   computed: {
     ...mapGetters(['profile','currentUser', 'followMovies']),

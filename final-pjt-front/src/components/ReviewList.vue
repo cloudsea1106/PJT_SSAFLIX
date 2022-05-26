@@ -1,5 +1,5 @@
 <template>
-  <div class="review-list">
+  <div class="review-list" v-if="isLoggedIn">
     <ul>
       <review-list-item 
         v-for="review in reviews" 
@@ -15,7 +15,7 @@
 <script>
 import ReviewListItem from '@/components/ReviewListItem.vue'
 import ReviewListForm from '@/components/ReviewListForm.vue'
-// import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 
 export default {
@@ -27,6 +27,9 @@ export default {
   props: {
     reviews: Array
   },
+  computed: {
+    ...mapGetters(['isLoggedIn']),
+  }
 }
 </script>
 

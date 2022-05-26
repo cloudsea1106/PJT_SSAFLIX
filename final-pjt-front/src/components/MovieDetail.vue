@@ -14,14 +14,17 @@
     <p>{{ movie.vote_average }}</p>
 
     <p>장르</p>
-    <p>{{ movie.genres }}</p>
+    <p>{{ movieGenre }}</p>
 
-    <p>좋아요</p>
-    <div>
-      Likeit:
-      <button
-        @click="likeMovie(movieId)"
-      >{{ likeCount }}</button>
+    <div v-if="isLoggedIn">
+      <p>좋아요</p>
+      <div>
+        Likeit:
+        <button
+          @click="likeMovie(movieId)"
+        >{{ likeCount }}</button>
+      </div>
+
     </div>
 
     <p>예고편</p>
@@ -53,7 +56,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['movie']),
+    ...mapGetters(['movie', 'isLoggedIn']),
     likeCount() {
       return this.movie.like_users?.length
     },
@@ -63,13 +66,15 @@ export default {
     previewUrl: function () {
       return "https://www.youtube.com/results?search_query=" + this.movie.title + " 예고편"
     },
-    // movieGenre() {
-    //   const genres = []
-    //   this.movie.genres.forEach(obj => {
-    //     genres.push(obj.name)
-    //   })
-    //   return genres
-    // }
+    movieGenre() {
+      const genres = []
+      if (this.movie.genres !== undefined) {
+        this.movie.genres.forEach(obj => {
+          genres.push(obj.name)
+        })
+      }
+      return genres.join(' / ')
+    }
   },
   methods: {
     ...mapActions(['fetchMovie', 'likeMovie']),
