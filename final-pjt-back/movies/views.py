@@ -30,11 +30,11 @@ def movie_list(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def movie_genre(request):
-    # 내가 리뷰를 남긴 영화들의 장르들 중 가장 많은 장르 1~2위를 선출
+    # 내가 리뷰를 남긴 영화들의 장르들 중 점수3점이상(만점5점), 가장 많은 장르 1~2위를 선출
     # 리뷰를 남긴 사람 대상, 장르가 1개 뿐이라면 1개에 대해서만
 
     user = get_object_or_404(User, pk=request.user.pk)
-    my_reviews = get_list_or_404(Review, user=user)
+    my_reviews = get_list_or_404(Review, user=user, vote__gte=3)
     serializer = ReviewSerializer(my_reviews, many=True)
     
     # 나의 리뷰 기반 선호 장르를 알아보기 위해 리뷰에 해당하는 장르 정리 
@@ -64,6 +64,7 @@ def movie_genre(request):
     
     movies = []  # 추천 영화 리스트
     for genre in best_genre:
+        # 해당장르, 6점이상 영화(총점10점)
         genre_movies = get_list_or_404(Movie, vote_average__gte=6, genres=genre)
 
         cnt = 0
