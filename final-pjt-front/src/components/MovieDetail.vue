@@ -5,14 +5,9 @@
       <div class="col-6">
         <img :src="imgUrl" alt="" class="" id="poster">
       </div>
-      <div class="row col-6 align-items-center">
+      <div class="row col-6 align-items-center text-start">
         <!-- 제목 -->
-        <h1>{{ movie.title }}</h1>
-
-        <div>
-          <span>줄거리: </span>
-          <span>{{ movie.overview }}</span>
-        </div>
+        <h1 class="mb-0">{{ movie.title }}</h1>
 
         <div>
           <span>평점: </span>
@@ -23,9 +18,13 @@
           <span>장르: </span>
           <span>{{ movieGenre }}</span>
         </div>
+        
+        <div>
+          <span>줄거리: </span>
+          <span>{{ movie.overview }}</span>
+        </div>
 
         <div v-if="isLoggedIn">
-          <p>좋아요</p>
           <div>
             Likeit:
             <button
@@ -33,7 +32,6 @@
             >{{ likeCount }}</button>
           </div>
         </div>
-        <span>예고편 </span>
         <span>
           <a :href="previewUrl" target="_blank">
             <v-btn depressed color="primary">Preview</v-btn>
@@ -46,9 +44,8 @@
       </div>
     </div>
 
-
     <span>뒤로가기 </span>
-    <button @click="goBack" type="button" class="btn btn-primary">BACK</button>
+    <button @click="goBack" type="button" class="btn btn-secondary">BACK</button>
   </div>
 </template>
 

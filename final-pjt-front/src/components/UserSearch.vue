@@ -2,7 +2,7 @@
   <div>
     <form @submit.prevent="moveToProfile">
       <label for="username">Search User : </label>
-      <input v-model="targetUser" type="text" id="username" required>
+      <input v-model="targetUser" type="text" id="username" class="mx-3 text-white" required>
       <button
         class="btn btn-primary"
       >SEARCH</button>
@@ -35,14 +35,6 @@ export default {
           this.$router.push(`/profile/${this.targetUser}`)
         })
         .catch(()=> alert('존재하지 않는 사용자입니다.'))
-
-      // this.$router.push(
-      //   `/profile/${this.targetUser}`
-      // ).catch(() => {
-      //   alert('whswog')
-      //   //this.$router.go(-1)
-      // })
-
     }
   }
 }

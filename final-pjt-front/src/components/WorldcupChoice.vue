@@ -1,6 +1,5 @@
 
 <template>
-  
   <div v-if="!!movie">
     <h2>{{ movie.title }}</h2>
     <v-hover
@@ -12,6 +11,7 @@
       <v-img
         @click="select"
         :src="imgUrl"
+        class="mx-auto"
         alt=""
         width="400px"
         height="600px"
@@ -27,7 +27,6 @@
     <p>장르</p>
     <p>{{ movie.genres }}</p>
   </div>
-
 </template>
 
 <script>

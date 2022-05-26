@@ -27,7 +27,7 @@
 
     <span v-if="currentUser.username === review.user.username && !isEditing">
       <button @click="switchIsEditing">Edit</button> |
-      <button @click="deleteReview(payload)">Delete</button>
+      <button @click="[deleteReview(payload), updatePage()]">Delete</button>
     </span>
     <hr>
   </li>
@@ -63,6 +63,9 @@ export default {
     onUpdate() {
       this.updateReview(this.payload)
       this.isEditing = false
+    },
+    updatePage() {
+      this.$router.go(0)
     }
   },
 

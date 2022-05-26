@@ -8,11 +8,11 @@
       </carousel-3d>
     </div>
 
-    <user-search v-if="isLoggedIn"></user-search>
+    <user-search v-if="isLoggedIn" class="my-5"></user-search>
 
-    <div v-if="isLoggedIn">
-      <h2 class="row justify-content-center">Recommend</h2>
-      <div class="row justify-content-center">
+    <div v-if="isLoggedIn" class="">
+      <h2 class="row justify-content-center mb-3">Recommend</h2>
+      <div class="row justify-content-center mb-5">
         <vue-glide v-if="recomMovies.length"
           data-glide-el="track"
           ref="slider"
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="mb-5">
       <router-link to="/worldcup">
         <button class="btn btn-primary">
           WORLD CUP

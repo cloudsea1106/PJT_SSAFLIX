@@ -36,39 +36,7 @@
             </vue-glide-slide>
           </vue-glide>
       </div>
-
     </div>
-
-    <!-- <h2>{{ profile.username }}의 친구가 좋아하는 영화</h2>
-    <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
-      <div class="row justify-content-center">
-        <vue-glide v-if="followMovies.length !== 0"
-          data-glide-el="track"
-          ref="slider"
-          type="slider"
-          :bound="true"
-          :per-view="10"
-          :dragThreshold="100"
-          :gap="10"
-          :breakpoints="{
-            2800: {perView: 8},
-            2400: {perView: 7},
-            2000: {perView: 6},
-            1800: {perView: 5},
-            1400: {perView: 4},
-            1200: {perView: 3},
-            800: {perView: 2},
-            400: {perView: 1}
-            }"
-        >
-          <vue-glide-slide v-for="(movie, idx) in followMovies" :key="idx">
-            <movie-card
-              :movie="movie"
-            ></movie-card>
-          </vue-glide-slide>
-        </vue-glide>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -104,7 +72,7 @@ export default {
   },
   created() {
     const payload = { username: this.$route.params.username }
-    this.fetchProfile(payload)
+    this.fetchProfile(payload.username)
     this.followUserMovies()
   },
 }
