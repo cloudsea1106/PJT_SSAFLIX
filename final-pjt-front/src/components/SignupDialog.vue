@@ -1,63 +1,85 @@
-
 <template>
-  <div v-if="!!movie">
-    <h2>{{ movie.title }}</h2>
-    <v-hover
-      v-slot:default="{ hover }"
-      :disabled="disabled"
-      :value="value"
-      max-height="600px"
+  <v-row justify="center">
+    <v-dialog
+      v-model="dialog"
+      width="600px"
     >
-      <v-img
-        @click="select"
-        :src="imgUrl"
-        class="mx-auto"
-        alt=""
-        width="400px"
-        height="600px"
-        :elevation="hover ? 12 : 2"
-      ></v-img>
-    </v-hover>
-    <p>줄거리</p>
-    <p>{{ movie.overview.slice(0,200) }}...</p>
-
-    <p>평점</p>
-    <p>{{ movie.vote_average }}</p>
-
-    <p>장르</p>
-    <p>{{ movie.genres }}</p>
-  </div>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          class="mx-5"
+        >
+          SignUp
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title class="justify-content-center">
+          <span class="text-h5">Signup</span>
+        </v-card-title>
+        <form @submit.prevent="signup(credentials)">
+          <div>
+            <label for="username">Username: </label>
+            <input  v-model="credentials.username" type="text" id="username" required/>
+          </div>
+          <div>
+            <label for="password1">Password: </label>
+            <input v-model="credentials.password1" type="password" id="password1" required />
+          </div>
+          <div>
+            <label for="password2">Password Confirmation:</label>
+            <input v-model="credentials.password2" type="password" id="password2" required />
+          </div>
+          <div>
+            <button class="btn btn-primary">Signup</button>
+          </div>
+        </form>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <button
+            class="btn btn-secondary"
+            @click="cancelSignup"
+          >
+            Cancel
+          </button>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
-// import axios from 'axios'
+import { mapActions, /*mapGetters*/ } from 'vuex'
+// import AccountErrorList from '@/components/AccountErrorList.vue'
+
 export default {
-  data () {
+  name: 'SignupView',
+  // components: {
+  //   AccountErrorList,
+  // },
+  data() {
     return {
-      movieObject: null,
-      disabled: false,
-      value: false,
+      dialog: false,
+      credentials: {
+        username: '',
+        password1: '',
+        password2: '',
+      }
     }
   },
-  
-  props: {
-    movie:{
-      type: Object,
-      required: false,
-    }
-  },
+  // computed: {
+  //   ...mapGetters(['authError'])
+  // },
   methods: {
-    select() {
-      this.$emit('choiceEvent', true)
+    ...mapActions(['signup']),
+    cancelSignup: function () {
+      this.credentials.username = ''
+      this.credentials.password1 = ''
+      this.credentials.password2 = ''
+      this.dialog = false
     }
   },
-  computed: {
-    imgUrl: function () {
-      return "https://image.tmdb.org/t/p/original" + this.movie.poster_path
-    }
-  }
 }
 </script>
-
-<style>
-</style>
