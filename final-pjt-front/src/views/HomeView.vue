@@ -1,5 +1,7 @@
 <template>
   <div class="container-fluid mx-0">
+
+    <!-- Carousel 3d -->
     <div class="row justify-content-center">
       <carousel-3d :width="598" :height="898" :display="11" :space="500">
         <slide v-for="(movie, idx) in movies" :index="idx" :key="idx" class="border-0">
@@ -8,10 +10,14 @@
       </carousel-3d>
     </div>
 
+    <!-- 유저 검색 -->
     <user-search v-if="isLoggedIn" class="my-10"></user-search>
 
+    <!-- 로그인 유저에게 추천하는 영화 -->
     <div v-if="isLoggedIn && !!recomMovies.length">
       <h2 class="row justify-content-center mt-5 mb-10">당신에게 추천하는 영화</h2>
+
+      <!-- glide -->
       <div class="row justify-content-center mb-10">
         <vue-glide v-if="!!recomMovies.length"
           data-glide-el="track"
@@ -32,25 +38,24 @@
             400: {perView: 1}
             }"
         >
+          
+          <!-- glide에 들어가는 영화 카드 -->
           <vue-glide-slide v-for="(movie, idx) in recomMovies" :key="idx">
-            <movie-card
-              :movie="movie"
-            ></movie-card>
+            <movie-card :movie="movie"></movie-card>
           </vue-glide-slide>
+
         </vue-glide>
       </div>
     </div>
 
+    <!-- 월드컵 이동 버튼 -->
     <div class="mb-5 row">
       <router-link to="/worldcup">
-        <button class="btn btn-primary col-10 display-4 p-5">
+        <button class="btn btn-primary col-10 display-4 p-5 font-weight-bold">
           WORLDCUP
           <i style="color:yellow;" class="fa-solid fa-trophy"></i>
         </button>
       </router-link>
-    </div>
-    <div>
-      <i style="color:yellow;" class="fa-solid fa-rectangle"></i>
     </div>
   </div>
 </template>

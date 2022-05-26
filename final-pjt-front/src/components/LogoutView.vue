@@ -1,4 +1,5 @@
 <template>
+  <!-- Navbar의 Logout버튼 -->
   <button @click="getLogout" class="text-primary">
     Logout
   </button>
@@ -11,6 +12,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   methods: {
     ...mapActions(['logout']),
+    // 로그아웃 함수
     getLogout: function () {
       if (this.isLoggedIn) {
         this.logout()
@@ -26,4 +28,5 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+</style>

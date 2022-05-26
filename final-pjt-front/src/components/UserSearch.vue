@@ -1,7 +1,10 @@
 <template>
   <div class="row">
+
+    <!-- 유저 검색 form -->
     <form @submit.prevent="moveToProfile">
       <label for="username" class="col-2 text-right">Search User : </label>
+
       <input
         v-model="targetUser"
         type="text"
@@ -10,9 +13,10 @@
         placeholder="친구를 찾아보세요!"
         required
       >
-      <button
-        class="btn btn-primary col-1"
-      >SEARCH</button>
+
+      <!-- 검색 버튼 -->
+      <button class="btn btn-primary col-1">SEARCH</button>
+
     </form>
   </div>
 </template>
@@ -32,6 +36,7 @@ export default {
   },
   methods: {
     ...mapActions([ 'fetchProfile' ]),
+    // 유저 프로필로 이동
     moveToProfile() {
       axios({
         url: `http://127.0.0.1:8000/api/v1/accounts/profile/${this.targetUser}`,

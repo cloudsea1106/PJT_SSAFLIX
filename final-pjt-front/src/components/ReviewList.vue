@@ -1,6 +1,10 @@
 <template>
   <div class="review-list rounded" v-if="isLoggedIn">
+
+    <!-- 리뷰 작성 -->
     <review-list-form></review-list-form>
+
+    <!-- 리뷰 표시 -->
     <ul>
       <review-list-item 
         v-for="review in reviews" 

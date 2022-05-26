@@ -3,10 +3,9 @@ import drf from '@/api/drf'
 import router from '@/router'
 
 import _ from 'lodash'
-// import accounts from './accounts'
 
 export default {
-  // namespaced: true,
+
   state: {
     movies: [],
     recomMovies: [],
@@ -34,39 +33,23 @@ export default {
     SET_MOVIE: (state, movie) => state.movie = movie,
     SET_MOVIE_REVIEWS: (state, reviews) => (state.movieReviews = reviews),
   },
+
   actions: {
+    // 영화 목록
     fetchMovies({ commit }) {
-      /* 영화 목록 받아오기
-      GET: movies URL (token)
-        성공하면
-          응답으로 받은 게시글들을 state.movies에 저장
-        실패하면
-          에러 메시지 표시
-      */
       axios({
         url: drf.movies.movies(),
         method: 'get',
-        // headers: getters.authHeader,
       })
         .then(res => commit('SET_MOVIES', res.data))
         .catch(err => console.error(err.response))
     },
 
-    fetchMovie({ commit, /*getters*/ }, movieId) {
-      /* 단일 게시글 받아오기
-      GET: movie URL (token)
-        성공하면
-          응답으로 받은 게시글들을 state.movies에 저장
-        실패하면
-          단순 에러일 때는
-            에러 메시지 표시
-          404 에러일 때는
-            NotFound404 로 이동
-      */
+    // 특정 영화 정보
+    fetchMovie({ commit }, movieId) {
       axios({
         url: drf.movies.movie(movieId),
         method: 'get',
-        //headers: getters.authHeader,
       })
         .then(res => commit('SET_MOVIE', res.data))
         .catch(err => {
@@ -77,14 +60,8 @@ export default {
         })
     },
 
+    // 추천 영화 정보
     fetchRecomMovies({ commit, getters }) {
-      /* 영화 목록 받아오기
-      GET: movies URL (token)
-        성공하면
-          응답으로 받은 게시글들을 state.movies에 저장
-        실패하면
-          에러 메시지 표시
-      */
       axios({
         url: drf.movies.recommendMovie(),
         method: 'get',
@@ -95,32 +72,19 @@ export default {
           console.error(err.response)})
     },
 
+    // 월드컵용 16개 영화 정보
     fetchWorldcupMovies({ commit }) {
-      /* 영화 목록 받아오기
-      GET: movies URL (token)
-        성공하면
-          응답으로 받은 게시글들을 state.movies에 저장
-        실패하면
-          에러 메시지 표시
-      */
       axios({
         url: drf.movies.worldcupMovie(),
         method: 'get',
-        // headers: getters.authHeader,
       })
         .then(res => commit('SET_WORLDCUP_MOVIES', res.data))
         .catch(err => {
           console.error(err.response)})
     },
 
+    // 영화 좋아요
     likeMovie({ commit, getters }, movieId) {
-      /* 좋아요
-      POST: likeMovie URL(token)
-        성공하면
-          state.movie 갱신
-        실패하면
-          에러 메시지 표시
-      */
       axios({
         url: drf.movies.likeMovie(movieId),
         method: 'post',
@@ -131,14 +95,8 @@ export default {
         .catch(err => console.error(err.response))
     },
 
+    // 리뷰 생성
 		createReview({ commit, getters }, { movieId, content, vote }) {
-      /* 리뷰 생성
-      POST: reviews URL(댓글 입력 정보, token)
-        성공하면
-          응답으로 state.movie의 reviews 갱신
-        실패하면
-          에러 메시지 표시
-      */
       const review = { content, vote }
       axios({
         url: drf.movies.reviews(movieId),
@@ -152,14 +110,9 @@ export default {
         .catch(err => console.error(err.response))
     },
 
+    // 리뷰 수정
     updateReview({ commit, getters }, { movieId, reviewId, content, vote }) {
-      /* 리뷰 수정
-      PUT: review URL(댓글 입력 정보, token)
-        성공하면
-          응답으로 state.movie의 reviews 갱신
-        실패하면
-          에러 메시지 표시
-      */
+
       const review = { content, vote }
 
       axios({
@@ -174,15 +127,8 @@ export default {
         .catch(err => console.error(err.response))
     },
 
+    // 리뷰 삭제
     deleteReview({ commit, getters }, { movieId, reviewId }) {
-      /* 리뷰 삭제
-      사용자가 확인을 받고
-        DELETE: review URL (token)
-          성공하면
-            응답으로 state.movie의 reviews 갱신
-          실패하면
-            에러 메시지 표시
-      */
         if (confirm('정말 삭제하시겠습니까?')) {
           axios({
             url: drf.movies.review(movieId, reviewId),

@@ -4,7 +4,7 @@ import drf from '@/api/drf'
 
 
 export default {
-  // namespaced: true,
+
   // state는 직접 접근하지 않는다.
   state: {
     token: localStorage.getItem('token') || '' ,
@@ -13,6 +13,7 @@ export default {
     authError: null,
     followMovies: [],
   },
+
   // 모든 state는 getters 를 통해서 접근한다.
   getters: {
     isLoggedIn: state => !!state.token,
@@ -32,34 +33,20 @@ export default {
   },
 
   actions: {
+    // state.token 추가 localStorage에 token 추가
     saveToken({ commit }, token) {
-      /* 
-      state.token 추가 
-      localStorage에 token 추가
-      */
       commit('SET_TOKEN', token)
       localStorage.setItem('token', token)
     },
-
+    
+    // state.token 삭제 localStorage에 token 갱신
     removeToken({ commit }) {
-      /* 
-      state.token 삭제
-      localStorage에 token 추가
-      */
       commit('SET_TOKEN', '')
       localStorage.setItem('token', '')
     },
 
+    // 로그인 요청
     login({ commit, dispatch }, credentials) {
-      /* 
-      POST: 사용자 입력정보를 login URL로 보내기
-        성공하면
-          응답 토큰 저장
-          현재 사용자 정보 받기
-          메인 페이지(HomeView)로 이동
-        실패하면
-          에러 메시지 표시
-      */
       axios({
         url: drf.accounts.login(),
         method: 'post',
@@ -69,7 +56,6 @@ export default {
           const token = res.data.key
           dispatch('saveToken', token)
           dispatch('fetchCurrentUser')
-          // router.push({ name: 'homeView' })
         })
         .catch(err => {
           alert('잘못된 사용자입니다')
@@ -78,16 +64,8 @@ export default {
         })
     },
 
+    // 회원가입 요청
     signup({ commit, dispatch }, credentials) {
-      /* 
-      POST: 사용자 입력정보를 signup URL로 보내기
-        성공하면
-          응답 토큰 저장
-          현재 사용자 정보 받기
-          메인 페이지(HomeView)로 이동
-        실패하면
-          에러 메시지 표시
-      */
       axios({
         url: drf.accounts.signup(),
         method: 'post',
@@ -105,44 +83,24 @@ export default {
         })
     },
 
+    // 로그아웃 요청
     logout({ getters, dispatch }) {
-      /* 
-      POST: token을 logout URL로 보내기
-        성공하면
-          토큰 삭제
-          사용자 알람
-          HomeView로 이동
-        실패하면
-          에러 메시지 표시
-      */
       axios({
         url: drf.accounts.logout(),
         method: 'post',
-        // data: {},
         headers: getters.authHeader,
       })
         .then(() => {
           dispatch('removeToken')
           alert('로그아웃 되었습니다.')
-          // if (this.$route.path!=='/') {
-          //   router.push({ name: 'homeView' })
-          // }
         })
         .catch(err => {
           console.error(err.response)
         })
     },
 
+    // 현재 유저 확인
     fetchCurrentUser({ commit, getters, dispatch }) {
-      /*
-      GET: 사용자가 로그인 했다면(토큰이 있다면)
-        currentUserInfo URL로 요청보내기
-          성공하면
-            state.cuurentUser에 저장
-          실패하면(토큰이 잘못되었다면)
-            기존 토큰 삭제
-            HomeView로 이동
-      */
       if (getters.isLoggedIn) {
         axios({
           url: drf.accounts.currentUserInfo(),
@@ -159,12 +117,8 @@ export default {
       }
     },
 
+    // 해당 유저 정보
     fetchProfile({ commit, getters }, { username }) {
-      /*
-      GET: profile URL로 요청보내기
-        성공하면
-          state.profile에 저장
-      */
       axios({
         url: drf.accounts.profile(username),
         method: 'get',
@@ -175,12 +129,8 @@ export default {
         })
     },
 
+    // 팔로우하는 유저 정보
     followUser({ commit, getters }, userPk ) {
-      /*
-      GET: profile URL로 요청보내기
-        성공하면
-          state.profile에 저장
-      */
       axios({
         url: drf.accounts.follow(userPk),
         method: 'post',
@@ -191,12 +141,8 @@ export default {
         .catch(err => console.error(err.response))
     },
 
+    // 팔로우하는 유저가 좋아하는 영화 정보
     followUserMovies({ commit, getters } ) {
-      /*
-      GET: profile URL로 요청보내기
-        성공하면
-          state.profile에 저장
-      */
       axios({
         url: drf.accounts.followMovies(),
         method: 'get',
