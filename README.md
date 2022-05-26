@@ -20,7 +20,7 @@
 $ cd final-pjt-back
 $ python -m venv venv
 $ source venv/Scripts/activate
-$ python install -r requirements.txt
+$ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py loaddata user.json genre.json movie.json review.json
 $ python manage.py runserver
