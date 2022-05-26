@@ -1,24 +1,34 @@
 <template>
-  <form @submit="onSubmit" class="review-list-form rounded">
-    <label for="review">review: </label>
-    <textarea class="form-control text-white bg-black rounded" rows="3" id="review" v-model="content">
-    </textarea>
+  <form @submit="onSubmit" class="review-list-form row">
 
-    <div>
-      <span>영화 평가하기: </span>
-      <select name="rate" id="rate" v-model="movieRate" class="text-white">
-        <option
-          :value="rate"
-          v-for="(rate, idx) in [0, 1, 2, 3, 4, 5]"
-          :key="idx"
-          class="bg-black"
-        >{{ rate }}
-        </option>
-      </select>
+    <div class="col-2">
+      <div class="form-group mx-0">
+        <select id="rate" v-model="movieRate" class="form-control bg-warning border-0 text-center py-0">
+          <option
+            :value="rate"
+            v-for="(rate, idx) in [1, 2, 3, 4, 5]"
+            :key="idx"
+            class="bg-black text-warning"
+          >{{ rate }}
+          </option>
+        </select>
+      </div>
+    </div>
+    
+    <div id="review" class="col-1">
+      <label for="review">Review: </label>
 
     </div>
+    <div id="review" class="col-6">
+      <textarea class="form-control text-white bg-black rounded" rows="1" id="review" v-model="content">
+      </textarea>
+    </div>
 
-    <button class="btn btn-primary">Submit</button>
+    <div class="col-3">
+      <button class="btn btn-primary">Submit</button>
+    </div>
+    <hr id="reviewHr">
+
   </form>
 </template>
 
@@ -47,13 +57,13 @@ export default {
 </script>
 
 <style>
-.review-list-form {
-  border: 1px solid #0D6EFD;
-  margin: 1rem;
-  padding: 1rem;
+#review {
+  font-size: 1.2rem;
 }
 
-form > input {
-  border: 1px solid #0D6EFD;
+#reviewHr {
+  background-color: #a9b93b;
+  height: 5px;
+  border: 0px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <v-btn @click="getLogout">
+  <button @click="getLogout" class="text-primary">
     Logout
-  </v-btn>
+  </button>
 </template>
 
 <script>

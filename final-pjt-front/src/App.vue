@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <nav class="navbar navbar-expand-lg bg-light sticky-top bg-black">
+    <nav class="navbar navbar-expand bg-light sticky-top bg-black">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
           <img alt="Vue logo" src="./assets/logo.png" height="30">
@@ -22,11 +22,11 @@
             </li>
             <!-- 로그인 -->
             <li class="nav-item" v-if="!isLoggedIn">
-              <login-dialog class="nav-link"></login-dialog>
+              <login-dialog class="nav-link mt-0"></login-dialog>
             </li>
             <!-- 회원가입 -->
             <li class="nav-item" v-if="!isLoggedIn">
-              <signup-dialog class="nav-link"></signup-dialog>
+              <signup-dialog class="nav-link mt-0"></signup-dialog>
             </li>
             <!-- 로그아웃 -->
             <li class="nav-item" v-if="isLoggedIn">

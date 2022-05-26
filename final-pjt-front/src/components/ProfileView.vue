@@ -1,14 +1,17 @@
 <template>
   <div>
-    <h1>{{ profile.username }}'s Profile</h1>
+    <h1 class="mt-10">{{ profile.username }}'s Profile</h1>
+    <hr class="mb-10">
+    
+    <div class="row mb-5">
+      <h5 class="offset-4 col-2">팔로잉 {{ followingCount }} 명</h5>
+      <h5 class="col-2">팔로워 {{ follwerCount }} 명</h5>
+    </div>
 
-    <h5>팔로잉: {{ followingCount }} 명</h5>
-    <h5>팔로워: {{ follwerCount }} 명</h5>
+    <follow-button class="mb-10"/>
 
-
-    <follow-button/>
     <div v-if="profile.like_movies !== undefined">
-      <h2>{{ profile.username }}이 좋아요 한 영화</h2>
+      <h2 class="mb-10">{{ profile.username }}님이 좋아해요</h2>
       <div class="row row-cols-4 row-cols-md-12 g-4 mt-3 mb-5">
         <vue-glide v-if="profile.like_movies.length"
             data-glide-el="track"

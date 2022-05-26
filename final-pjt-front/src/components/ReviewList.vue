@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style>
-.review-list {
-  border: 1px solid blue;
+ul {
+  list-style: none;
 }
 </style>

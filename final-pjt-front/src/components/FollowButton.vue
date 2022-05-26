@@ -1,12 +1,15 @@
 <template>
   <div>
-    <div v-if="profile.pk != currentUser.pk">
-      <v-btn v-if="!!this.profile.followers && profile.followers.map(user => user.pk).includes(currentUser.pk)"
+    <div v-if="profile.pk != currentUser.pk" class="row">
+      <button
+        v-if="!!this.profile.followers && profile.followers.map(user => user.pk).includes(currentUser.pk)"
         @click="followUser(profile.pk)"
-      >UNFOLLOW</v-btn>
-      <v-btn v-else
+        class="btn btn-secondary offset-5 col-2"
+      >UNFOLLOW</button>
+      <button v-else
         @click="followUser(profile.pk)"
-      >FOLLOW</v-btn>
+        class="btn btn-primary offset-5 col-2"
+      >FOLLOW</button>
     </div>
   </div>
 </template>

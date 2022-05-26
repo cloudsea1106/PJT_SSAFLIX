@@ -1,10 +1,17 @@
 <template>
-  <div>
+  <div class="row">
     <form @submit.prevent="moveToProfile">
-      <label for="username">Search User : </label>
-      <input v-model="targetUser" type="text" id="username" class="mx-3 text-white" required>
+      <label for="username" class="col-2 text-right">Search User : </label>
+      <input
+        v-model="targetUser"
+        type="text"
+        id="username"
+        class="mx-3 text-white border border-white col-5 rounded"
+        placeholder="친구를 찾아보세요!"
+        required
+      >
       <button
-        class="btn btn-primary"
+        class="btn btn-primary col-1"
       >SEARCH</button>
     </form>
   </div>
@@ -41,5 +48,7 @@ export default {
 </script>
 
 <style>
-
+label {
+  font-size: 1.5rem;
+}
 </style>

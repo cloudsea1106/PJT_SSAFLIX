@@ -2,16 +2,49 @@
   <div class="container">
     <div class="row">
       <!-- 포스터 -->
-      <div class="col-6">
+      <div class="col-md-6 col-12">
         <img :src="imgUrl" alt="" class="" id="poster">
       </div>
-      <div class="row col-6 align-items-center text-start">
+      <div class="row col-md-6 col-12 align-items-center text-start">
         <!-- 제목 -->
         <h1 class="mb-0">{{ movie.title }}</h1>
 
+        <div class="row">
+          <div v-if="isLoggedIn && !!movie.like_users" class="col-1">
+            <div v-if="movie.like_users.map(obj => obj.pk).includes(currentUser.pk)">
+              <button
+                @click="[likeMovie(movieId), shakeIcon1()]"
+              >
+                <i id="icon1" class="fa-solid fa-heart fa-2xl"></i>
+              </button>
+            </div>
+            <div v-else>
+              <button
+                @click="[likeMovie(movieId), shakeIcon2()]"
+              >
+                <i id="icon2" class="fa-regular fa-heart fa-2xl"></i>
+              </button>
+            </div>
+          </div>
+
+          <span class="col-1">
+            <a :href="previewUrl" target="_blank">
+              <!-- <v-btn depressed color="primary">Preview</v-btn> -->
+              <i style="color:red" class="fa-brands fa-youtube fa-2xl"></i>
+            </a>
+          </span>
+        </div>
+
         <div>
-          <span>평점: </span>
-          <span>{{ movie.vote_average }}</span>
+          <div v-if="!!movie.vote_average">
+            <span>평점: </span>
+            <span v-for="(i, idx) in parseInt(movie.vote_average / 2)" :key="idx">
+              <i style="color:yellow;" class="fas fa-star"></i>
+            </span>
+            <span v-if="parseInt(movie.vote_average) % 2 === 1">
+              <i style="color:yellow;" class="fas fa-star-half"></i>
+            </span>
+          </div>
         </div>
 
         <div>
@@ -24,27 +57,13 @@
           <span>{{ movie.overview }}</span>
         </div>
 
-        <div v-if="isLoggedIn">
-          <div>
-            Likeit:
-            <button
-              @click="likeMovie(movieId)"
-            >{{ likeCount }}</button>
-          </div>
-        </div>
-        <span>
-          <a :href="previewUrl" target="_blank">
-            <v-btn depressed color="primary">Preview</v-btn>
-          </a>
-        </span>
       </div>
-
-      <div class="col mb-5">
+      
+      <div class="col my-15">
         <review-list :reviews="movieReviews"></review-list>
       </div>
     </div>
 
-    <span>뒤로가기 </span>
     <button @click="goBack" type="button" class="btn btn-secondary">BACK</button>
   </div>
 </template>
@@ -64,7 +83,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['movie', 'isLoggedIn', 'movieReviews']),
+    ...mapGetters(['movie', 'isLoggedIn', 'movieReviews', 'currentUser']),
     likeCount() {
       return this.movie.like_users?.length
     },
@@ -88,6 +107,16 @@ export default {
     ...mapActions(['fetchMovie', 'likeMovie']),
     goBack() {
       this.$router.go(-1)
+    },
+    shakeIcon1() {
+      const target = document.querySelector('#icon1')
+      setTimeout(target.setAttribute('class', 'fa-regular fa-heart fa-2xl'), 0)
+      target.setAttribute('class', 'fa-regular fa-heart fa-2xl fa-shake')
+    },
+    shakeIcon2() {
+      const target = document.querySelector('#icon2')
+      setTimeout(target.setAttribute('class', 'fa-solid fa-heart fa-2xl'), 0)
+      target.setAttribute('class', 'fa-solid fa-heart fa-2xl fa-shake')
     }
   },
   created() {
@@ -99,5 +128,8 @@ export default {
 <style>
 #poster {
   height: 500px;
+}
+i {
+  color: pink;
 }
 </style>

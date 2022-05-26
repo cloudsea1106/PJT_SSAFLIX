@@ -1,35 +1,82 @@
 <template>
   <li class="review-list-item">
-    <router-link 
-    :to="{ name: 'profileView', params: { username: review.user.username } }"
-    class="text-decoration-none">
-      {{ review.user.username }}
-    </router-link>: 
-    
-    <span v-if="!isEditing">{{ payload.content }}</span><br>
-    <span v-if="!isEditing">{{ payload.vote }}</span>
-    <br>
+    <div class="row">
 
-    <span v-if="isEditing">
-      <input type="text" v-model="payload.content" class="text-white mx-3">
-      <select name="rate" id="rate" v-model="payload.vote" class="text-white me-3">
-      <option
-        :value="rate"
-        v-for="(rate, idx) in [0, 1, 2, 3, 4, 5]"
-        :key="idx"
-        class="bg-black"
-      >{{ rate }}
-      </option>
-    </select>
-      <button @click="onUpdate">Update</button> |
-      <button @click="switchIsEditing">Cancel</button>
-    </span>
+      <div class="col-3 text-right">
+        <span v-if="!isEditing">
+          <span v-for="(i, idx) in parseInt(payload.vote)" :key="idx">
+            <i style="color:yellow;" class="fas fa-star fa-xl"></i>
+          </span>
+        </span>
+      </div>
 
-    <span v-if="currentUser.username === review.user.username && !isEditing">
-      <button @click="switchIsEditing">Edit</button> |
-      <button @click="[deleteReview(payload), updatePage()]">Delete</button>
-    </span>
-    <hr>
+      <div id="review" class="col-6 text-left" v-if="!isEditing">
+        <router-link 
+        :to="{ name: 'profileView', params: { username: review.user.username } }"
+        class="text-decoration-none font-weight-bold text-primary"
+        >
+          {{ review.user.username }}
+        </router-link>: 
+        
+        <span>{{ payload.content }}</span>
+      </div>
+      
+      <div class="col-3">
+        <span v-if="currentUser.username === review.user.username && !isEditing">
+          <button
+            @click="switchIsEditing"
+            class="btn btn-info mr-3"
+          >Edit</button>
+          <button
+            @click="[deleteReview(payload), updatePage()]"
+            class="btn btn-danger"
+          >Delete</button>
+        </span>
+      </div>
+
+
+      <span v-if="isEditing" class="row">
+        <div class="offset-1 col-2 text-right">
+          <div class="form-group mx-0">
+            <select id="rate" v-model="payload.vote" class="form-control bg-warning border-0 text-center py-0">
+              <option
+                :value="rate"
+                v-for="(rate, idx) in [1, 2, 3, 4, 5]"
+                :key="idx"
+                class="bg-black text-warning"
+              >{{ rate }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div id="review" class="col-6 text-left">
+          <router-link 
+          :to="{ name: 'profileView', params: { username: review.user.username } }"
+          class="text-decoration-none font-weight-bold text-primary"
+          >
+          {{ review.user.username }}
+          </router-link>: 
+
+          <input type="text" v-model="payload.content" class="text-white mx-3">
+
+        </div>
+
+        <div class="col-3">
+          <button
+            @click="onUpdate"
+            class="btn btn-info mr-3"
+            >Update</button>
+          <button
+            @click="switchIsEditing"
+            class="btn btn-secondary"
+            >Cancel</button>
+
+        </div>
+      </span>
+
+      <hr>
+    </div>
   </li>
 </template>
 
@@ -73,4 +120,7 @@ export default {
 </script>
 
 <style>
+#review {
+  font-size: 1.2rem;
+}
 </style>

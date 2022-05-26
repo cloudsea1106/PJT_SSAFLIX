@@ -123,7 +123,7 @@ export default {
       })
         .then(() => {
           dispatch('removeToken')
-          alert('성공적으로 logout!')
+          alert('로그아웃 되었습니다.')
           // if (this.$route.path!=='/') {
           //   router.push({ name: 'homeView' })
           // }

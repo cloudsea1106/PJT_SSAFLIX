@@ -1,7 +1,12 @@
-
 <template>
   <div v-if="!!movie">
     <h2>{{ movie.title }}</h2>
+    <span v-for="(i, idx) in parseInt(movie.vote_average / 2)" :key="idx">
+      <i style="color:yellow;" class="fas fa-star"></i>
+    </span>
+    <span v-if="parseInt(movie.vote_average) % 2 === 1">
+      <i style="color:yellow;" class="fas fa-star-half"></i>
+    </span>
     <v-hover
       v-slot:default="{ hover }"
       :disabled="disabled"
@@ -11,21 +16,13 @@
       <v-img
         @click="select"
         :src="imgUrl"
-        class="mx-auto"
+        class="mx-auto rounded"
         alt=""
-        width="400px"
-        height="600px"
+        width="300px"
+        height="450px"
         :elevation="hover ? 12 : 2"
       ></v-img>
     </v-hover>
-    <p>줄거리</p>
-    <p>{{ movie.overview.slice(0,200) }}...</p>
-
-    <p>평점</p>
-    <p>{{ movie.vote_average }}</p>
-
-    <p>장르</p>
-    <p>{{ movie.genres }}</p>
   </div>
 </template>
 

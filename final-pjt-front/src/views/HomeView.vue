@@ -8,12 +8,12 @@
       </carousel-3d>
     </div>
 
-    <user-search v-if="isLoggedIn" class="my-5"></user-search>
+    <user-search v-if="isLoggedIn" class="my-10"></user-search>
 
-    <div v-if="isLoggedIn" class="">
-      <h2 class="row justify-content-center mb-3">Recommend</h2>
-      <div class="row justify-content-center mb-5">
-        <vue-glide v-if="recomMovies.length"
+    <div v-if="isLoggedIn && !!recomMovies.length">
+      <h2 class="row justify-content-center mt-5 mb-10">당신에게 추천하는 영화</h2>
+      <div class="row justify-content-center mb-10">
+        <vue-glide v-if="!!recomMovies.length"
           data-glide-el="track"
           ref="slider"
           type="slider"
@@ -41,12 +41,16 @@
       </div>
     </div>
 
-    <div class="mb-5">
+    <div class="mb-5 row">
       <router-link to="/worldcup">
-        <button class="btn btn-primary">
-          WORLD CUP
+        <button class="btn btn-primary col-10 display-4 p-5">
+          WORLDCUP
+          <i style="color:yellow;" class="fa-solid fa-trophy"></i>
         </button>
       </router-link>
+    </div>
+    <div>
+      <i style="color:yellow;" class="fa-solid fa-rectangle"></i>
     </div>
   </div>
 </template>
@@ -78,7 +82,10 @@ export default {
   },
   created() {
     this.fetchMovies()
-    this.fetchRecomMovies()
+    if (this.isLoggedIn) {
+      this.fetchRecomMovies()
+    }
   },
 }
 </script>
+

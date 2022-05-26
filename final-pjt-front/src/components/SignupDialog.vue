@@ -5,15 +5,13 @@
       width="600px"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
+        <button
           v-bind="attrs"
           v-on="on"
-          class="mx-5"
+          class="text-primary"
         >
           SignUp
-        </v-btn>
+        </button>
       </template>
       <v-card class="bg-black text-white" style="height:300px">
         <v-card-title class="justify-content-center">

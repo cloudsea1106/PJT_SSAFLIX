@@ -12,7 +12,7 @@
 
 - 개발환경
   - Django 3.2.12
-  - Vue
+  - Vue.js 2
 
 - BACK-END
 

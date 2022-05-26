@@ -1,17 +1,23 @@
 <template>
   <v-container class="worldcup">
-    <h2>Worldcup</h2>
+    <h2>WORLDCUP
+      <i style="color:yellow;" class="fa-solid fa-trophy"></i>
+    </h2>
 
     <div v-if="!finishFlag">
-      <h1>선택해 주세요</h1>
-      <hr>
+      <hr class="mb-10">
       <div v-if="!left">
         <button
           v-if="finalRound"
           @click="goNext"
-          class="btn btn-warning"
+          class="btn btn-warning col-10 display-4 p-5 text-white my-15"
         >결승전</button>
-        <v-btn v-else @click="goNext">{{ roundNum }}강 시작하기</v-btn>
+        <button
+          v-else
+          @click="goNext"
+          class="btn btn-success col-10 display-4 p-5 text-white my-15"  
+        >{{ roundNum }}강 시작하기
+        </button>
       </div>
       <v-row
         align="center"
@@ -35,7 +41,11 @@
     </div>
     
     <div v-if="finishFlag">
-      <h1>우승!</h1>
+      <h1>
+        <i style="color:yellow;" class="fa-solid fa-trophy"></i>
+        우승!
+        <i style="color:yellow;" class="fa-solid fa-trophy"></i>
+      </h1>
       <hr>
       <v-row
         align="center"
@@ -60,9 +70,9 @@
     <div>
       <router-link to="/">
         <button 
-          class="btn btn-secondary" 
+          class="btn btn-secondary mt-10" 
         >
-          BACK
+          HOME
         </button>
       </router-link>
     </div>
