@@ -1,7 +1,10 @@
+# 초기 데이터 생성
+
 import requests
 import json
+import tmdb
 
-url = 'https://api.themoviedb.org/3/genre/movie/list?api_key=e77799b3a9dc34288e190da6c3fcd54c&language=ko'
+url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={tmdb.api_key}&language=ko'
 res = requests.get(url).json()
 data = res['genres']
 
@@ -19,5 +22,5 @@ for genre in data:
     genres.append(genre)
 
 
-with open('genredata.json', 'w') as f:
-    json.dump(genres, f)
+with open('genredata.json', 'w', encoding='utf-8') as f:
+    json.dump(genres, f, ensure_ascii=False)

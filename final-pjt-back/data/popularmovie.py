@@ -1,9 +1,13 @@
+# 초기 데이터 생성
+
 import requests
 import json
+import tmdb
+
 
 movies = []
 for page in range(1, 51):
-    url = f'https://api.themoviedb.org/3/movie/popular?api_key=e77799b3a9dc34288e190da6c3fcd54c&language=ko&page={page}&region=KR'
+    url = f'https://api.themoviedb.org/3/movie/popular?api_key={tmdb.api_key}&language=ko&page={page}&region=KR'
     res = requests.get(url).json()
     data = res['results']
 
@@ -25,5 +29,5 @@ for page in range(1, 51):
 
         movies.append(movie)
 
-with open('popularmoviedata.json', 'w') as f:
-    json.dump(movies, f)
+with open('popularmoviedata.json', 'w', encoding='utf-8') as f:
+    json.dump(movies, f, ensure_ascii=False)
